@@ -8,7 +8,8 @@
 </head>
 <body>
     <h1 class="my-6 text-center font-bold text-3xl">THE LIST OF COUNTRYs IN THE worlds   </h1>
-    
+    <canvas id="myChart" style="width:100%;max-width:95%" class="mx-auto">
+    </canvas>
 <form class="max-w-md mx-auto">   
     <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
     <div class="relative">
@@ -27,6 +28,7 @@
 </div>
     <script>
         let endpoint = "https://restcountries.com/v3.1/all"
+        const chartData = [];
         fetch (endpoint)
         .then((result)=>result.json())
         .then((convertedRespond)=>
@@ -51,10 +53,26 @@
         </div>
     </div>
          `
-         })   
-       )
+         chartData.push({ name: count.name.common, population: count.population });
+      new Chart("myChart",{
+            type:"bar",
+            data: {
+                labels: chartData.map(item => item.name),
+           datasets: [
+            {
+                label:"Country population",
+             backgroundColor:"blue",
+             data: chartData.map(item => item.population)
+            }
+           ],
+         },
+        })
+    }) 
+         )
+      
         .catch((err)=>console.log(err))
            
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </body>
 </html>
